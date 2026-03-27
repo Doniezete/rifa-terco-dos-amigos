@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rifa — Terço dos Amigos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --roxo: #8e44ad;
+      --vinho: #c0392b;
+      --dourado: #f1c40f;
+      --verde: #1dd1a1;
+      --azul-sel: #48dbfb;
+      --laranja: #f39c12;
+      --bg: #f5f0ff;
+      --card: #ffffff;
+      --texto: #2c2c2c;
+      --texto2: #666;
+      --borda: #e0d8f0;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: var(--texto);
+      min-height: 100vh;
+      padding-bottom: 3rem;
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #8e44ad, #c0392b, #f39c12, #27ae60);
+      background-size: 300% 300%;
+      animation: gradAnim 7s ease infinite;
+      padding: 2rem 1rem 1.5rem;
+      text-align: center;
+      border-radius: 0 0 32px 32px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 20px rgba(142,68,173,0.3);
+    }
+    @keyframes gradAnim {
+      0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%}
+    }
+    .header-titulo {
+      font-family: 'Baloo 2', cursive;
+      font-size: clamp(20px, 5vw, 28px);
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      letter-spacing: 1px;
+    }
+    .header-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.92);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+    .premio-box {
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(4px);
+      border-radius: 14px;
+      margin: 12px auto 10px;
+      padding: 10px 18px;
+      max-width: 360px;
+    }
+    .premio-titulo {
+      font-size: 11px;
+      color: rgba(255,255,255,0.85);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+    }
+    .premio-items {
+      font-size: 13px;
+      color: #fff;
+      line-height: 1.8;
+      font-weight: 600;
+    }
+    .preco-box {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .preco-pill {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+    .preco-pill.dest {
+      background: var(--dourado);
+      color: #5d4037;
+      box-shadow: 0 2px 8px rgba(241,196,15,0.4);
+    }
+    .sync-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.9);
+      font-size: 11px;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-top: 10px;
+    }
+
+    /* CONTAINER */
+    .container { max-width: 760px; margin: 0 auto; padding: 0 1rem; }
+
+    /* LOADING */
+    .loading-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 3rem 1rem;
+      color: var(--texto2);
+      font-size: 15px;
+    }
+    .spinner {
+      width: 24px; height: 24px;
+      border: 3px solid var(--borda);
+      border-top-color: var(--roxo);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 1.2rem;
+    }
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--borda);
+      border-radius: var(--radius);
+      padding: 12px 8px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .stat-n {
+      font-family: 'Baloo 2', cursive;
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .stat-l { font-size: 11px; color: var(--texto2); margin-top: 3px; }
+    .s-d .stat-n { color: #1dd1a1; }
+    .s-r .stat-n { color: var(--laranja); }
+    .s-v .stat-n { color: var(--vinho); }
+
+    /* LEGENDA */
+    .legenda {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .leg { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--texto2); }
+    .ldot { width: 15px; height: 15px; border-radius: 4px; }
+    .ld-l { background: #fff; border: 1.5px solid var(--borda); }
+    .ld-s { background: var(--azul-sel); }
+    .ld-r { background: var(--laranja); }
+    .ld-v { background: var(--vinho); }
+
+    /* GRADE */
+    .grade {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 5px;
+      margin-bottom: 1.5rem;
+    }
+    @media(max-width: 420px) {
+      .grade { grid-template-columns: repeat(8, 1fr); gap: 4px; }
+    }
+    .num {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 1.5px solid var(--borda);
+      background: #fff;
+      color: #888;
+      transition: transform .12s, box-shadow .12s;
+      user-select: none;
+    }
+    .num:hover:not(.res):not(.vend) {
+      transform: scale(1.18);
+      box-shadow: 0 4px 12px rgba(142,68,173,0.25);
+      z-index: 2;
+      position: relative;
+      color: var(--roxo);
+      border-color: var(--roxo);
+    }
+    .num.sel {
+      background: var(--azul-sel);
+      color: #0a3d62;
+      border-color: #0abde3;
+      transform: scale(1.12);
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 4px 10px rgba(72,219,251,0.4);
+    }
+    .num.res {
+      background: var(--laranja);
+      color: #7d3c00;
+      border-color: #d68910;
+      cursor: default;
+    }
+    .num.vend {
+      background: var(--vinho);
+      color: #fff;
+      border-color: #a93226;
+      cursor: default;
+      text-decoration: line-through;
+      opacity: .65;
+    }
+
+    /* PAINEL COMPRA */
+    .painel {
+      background: var(--card);
+      border: 1px solid var(--borda);
+      border-radius: 18px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      margin-bottom: 1.2rem;
+    }
+    .ptitulo {
+      font-family: 'Baloo 2', cursive;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--roxo);
+      margin-bottom: 8px;
+    }
+    .preco-info {
+      font-size: 12px;
+      color: var(--texto2);
+      background: #f5f0ff;
+      border: 1px solid #e0d0f5;
+      padding: 8px 12px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+    .preco-info strong { color: var(--roxo); }
+    .sel-lista {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 40px;
+      padding: 10px;
+      background: #faf8ff;
+      border: 1px dashed var(--borda);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+    .badge {
+      background: var(--azul-sel);
+      color: #0a3d62;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 11px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .badge:hover { opacity: .65; }
+    .ph { font-size: 12px; color: #bbb; }
+    .total-linha {
+      text-align: right;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--roxo);
+      margin-bottom: 14px;
+      min-height: 20px;
+    }
+    .campo { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .campo label { font-size: 12px; font-weight: 700; color: var(--texto2); }
+    .campo input {
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1.5px solid var(--borda);
+      background: #faf8ff;
+      color: var(--texto);
+      width: 100%;
+      transition: border-color .15s;
+    }
+    .campo input:focus { outline: none; border-color: var(--roxo); }
+
+    /* PIX */
+    .pix-box {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+    }
+    .pix-titulo { font-size: 11px; color: #aaa; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
+    .pix-chave { font-size: 14px; color: var(--dourado); font-weight: 700; font-family: monospace; word-break: break-all; }
+    .pix-nome { font-size: 11px; color: #ccc; margin-top: 3px; }
+    .btn-pix-cop {
+      margin-top: 8px;
+      font-size: 11px;
+      padding: 4px 14px;
+      background: rgba(241,196,15,0.15);
+      color: var(--dourado);
+      border: 1px solid rgba(241,196,15,0.35);
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      transition: background .15s;
+    }
+    .btn-pix-cop:hover { background: rgba(241,196,15,0.28); }
+
+    /* ERRO */
+    .erro-msg {
+      background: #fff0f0;
+      color: #c0392b;
+      border: 1px solid #f5c6c6;
+      border-radius: 10px;
+      padding: 9px 13px;
+      font-size: 12px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    /* BTN RESERVAR */
+    .btn-res {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(90deg, var(--roxo), var(--vinho));
+      color: #fff;
+      font-family: 'Baloo 2', cursive;
+      font-size: 17px;
+      font-weight: 800;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      letter-spacing: .5px;
+      box-shadow: 0 4px 14px rgba(142,68,173,0.35);
+      transition: opacity .15s, transform .1s;
+    }
+    .btn-res:hover { opacity: .9; transform: scale(.99); }
+    .btn-res:disabled { opacity: .4; cursor: default; transform: none; box-shadow: none; }
+    .aviso { font-size: 11px; color: var(--texto2); margin-top: 9px; text-align: center; line-height: 1.6; }
+
+    /* ADMIN */
+    .toggle-admin { text-align: center; margin-bottom: 1rem; }
+    .btn-admin {
+      font-size: 12px;
+      padding: 6px 18px;
+      background: transparent;
+      color: var(--texto2);
+      border: 1px solid var(--borda);
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      transition: background .15s;
+    }
+    .btn-admin:hover { background: #f0eaff; }
+    .admin-painel {
+      display: none;
+      background: var(--card);
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+    }
+    .admin-painel.ativo { display: block; }
+    .admin-titulo { font-weight: 700; font-size: 14px; color: var(--texto); margin-bottom: 12px; }
+    .admin-entrada {
+      margin-bottom: 10px;
+      padding: 10px 12px;
+      background: #faf8ff;
+      border-radius: 10px;
+      border: 1px solid var(--borda);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .admin-info { line-height: 1.7; color: var(--texto); font-size: 13px; flex: 1; }
+    .admin-nums { color: var(--roxo); font-weight: 700; }
+    .btn-conf {
+      font-size: 12px;
+      padding: 5px 13px;
+      background: var(--verde);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 700;
+      white-space: nowrap;
+      font-family: 'Nunito', sans-serif;
+    }
+    .btn-conf:hover { opacity: .85; }
+    .admin-vazio { color: var(--texto2); font-size: 13px; text-align: center; padding: 10px 0; }
+
+    /* MODAIS */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.ativo { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 22px;
+      padding: 1.75rem 1.5rem;
+      max-width: 390px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      animation: popIn .25s ease;
+    }
+    @keyframes popIn { from { transform: scale(.92); opacity:0; } to { transform:scale(1); opacity:1; } }
+    .modal-header { text-align: center; margin-bottom: 1rem; }
+    .modal-emoji { font-size: 44px; display: block; margin-bottom: 6px; }
+    .modal-titulo { font-family: 'Baloo 2', cursive; font-size: 22px; font-weight: 800; color: var(--roxo); }
+    .comp-box {
+      background: #faf8ff;
+      border: 1px dashed var(--borda);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      font-size: 12.5px;
+      line-height: 2;
+      color: var(--texto);
+      white-space: pre-wrap;
+      font-family: monospace;
+      user-select: all;
+      cursor: text;
+    }
+    .btn-cop {
+      width: 100%;
+      padding: 11px;
+      background: var(--verde);
+      color: #fff;
+      font-family: 'Baloo 2', cursive;
+      font-size: 15px;
+      font-weight: 800;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: opacity .15s;
+    }
+    .btn-cop:hover { opacity: .85; }
+    .btn-fech {
+      width: 100%;
+      padding: 9px;
+      background: transparent;
+      color: var(--texto2);
+      font-size: 13px;
+      border: 1px solid var(--borda);
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    /* MODAL SENHA */
+    .modal-senha {
+      background: #fff;
+      border-radius: 22px;
+      padding: 1.75rem 1.5rem;
+      max-width: 300px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      animation: popIn .25s ease;
+    }
+    .senha-titulo { font-family: 'Baloo 2', cursive; font-size: 20px; font-weight: 800; color: var(--roxo); margin-bottom: 14px; }
+    .senha-input {
+      font-family: 'Nunito', sans-serif;
+      font-size: 20px;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1.5px solid var(--borda);
+      background: #faf8ff;
+      color: var(--texto);
+      width: 100%;
+      text-align: center;
+      letter-spacing: 6px;
+      margin-bottom: 12px;
+    }
+    .senha-input:focus { outline: none; border-color: var(--roxo); }
+    .btn-entrar {
+      width: 100%;
+      padding: 11px;
+      background: linear-gradient(90deg, var(--roxo), var(--vinho));
+      color: #fff;
+      font-family: 'Baloo 2', cursive;
+      font-size: 15px;
+      font-weight: 800;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+    .senha-erro { color: var(--vinho); font-size: 12px; margin-bottom: 10px; display: none; font-weight: 600; }
+
+    /* CONFIG FIREBASE */
+    .config-box {
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      border-radius: 14px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .config-titulo { font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 800; color: #e65100; margin-bottom: 8px; }
+    .config-texto { font-size: 13px; color: #5d4037; line-height: 1.7; margin-bottom: 10px; }
+    .config-input {
+      font-family: monospace;
+      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #ffcc80;
+      background: #fff;
+      color: #333;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+    .config-input:focus { outline: none; border-color: #e65100; }
+    .btn-config {
+      padding: 9px 20px;
+      background: #e65100;
+      color: #fff;
+      font-family: 'Baloo 2', cursive;
+      font-size: 14px;
+      font-weight: 800;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .btn-config:hover { opacity: .9; }
+
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: #bbb;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-titulo">✝️ RIFA — TERÇO DOS AMIGOS ✝️</div>
+  <div class="header-sub">Participe e concorra a prêmios especiais!</div>
+  <div class="premio-box">
+    <div class="premio-titulo">🏆 Prêmios</div>
+    <div class="premio-items">🍫 Cesta de Chocolate<br>📖 Bíblia Ave Maria<br>📿 Terço</div>
+  </div>
+  <div class="preco-box">
+    <div class="preco-pill">1 número = R$ 7,00</div>
+    <div class="preco-pill dest">✨ 4 números = R$ 25,00</div>
+  </div>
+  <div class="sync-badge">🔄 Sincronizado entre dispositivos</div>
+</div>
+
+<div class="container">
+
+  <!-- AVISO DE CONFIGURAÇÃO -->
+  <div class="config-box" id="config-box">
+    <div class="config-titulo">⚙️ Configure seu Firebase</div>
+    <div class="config-texto">
+      Cole abaixo a URL do seu <strong>Firebase Realtime Database</strong>.<br>
+      Siga o passo a passo do arquivo <strong>LEIA-ME.txt</strong> que veio junto para criar o banco gratuitamente.
+    </div>
+    <input type="text" class="config-input" id="inp-firebase-url" placeholder="https://seu-projeto-default-rtdb.firebaseio.com"/>
+    <br/>
+    <button class="btn-config" onclick="salvarConfig()">Salvar e conectar</button>
+  </div>
+
+  <!-- LOADING -->
+  <div id="loading-box" class="loading-box" style="display:none">
+    <div class="spinner"></div>
+    <span>Conectando ao banco de dados...</span>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div id="conteudo" style="display:none">
+    <div class="stats">
+      <div class="stat s-d"><div class="stat-n" id="cnt-d">—</div><div class="stat-l">Disponíveis</div></div>
+      <div class="stat s-r"><div class="stat-n" id="cnt-r">—</div><div class="stat-l">Reservados</div></div>
+      <div class="stat s-v"><div class="stat-n" id="cnt-v">—</div><div class="stat-l">Confirmados</div></div>
+    </div>
+
+    <div class="legenda">
+      <div class="leg"><div class="ldot ld-l"></div>Disponível</div>
+      <div class="leg"><div class="ldot ld-s"></div>Selecionado</div>
+      <div class="leg"><div class="ldot ld-r"></div>Reservado</div>
+      <div class="leg"><div class="ldot ld-v"></div>Vendido</div>
+    </div>
+
+    <div class="grade" id="grade"></div>
+
+    <div class="painel">
+      <div class="ptitulo">🛒 Sua seleção</div>
+      <div class="preco-info">💡 <strong>Promoção:</strong> Escolha 4 números e pague apenas R$ 25,00 (em vez de R$ 28,00)!</div>
+      <div class="sel-lista" id="sel-lista"><span class="ph">Clique nos números para selecionar</span></div>
+      <div class="total-linha" id="total-linha"></div>
+
+      <div class="campo">
+        <label>Seu nome completo</label>
+        <input type="text" id="inp-nome" placeholder="Ex: Maria Silva" maxlength="60"/>
+      </div>
+      <div class="campo">
+        <label>Seu WhatsApp</label>
+        <input type="tel" id="inp-fone" placeholder="Ex: (43) 99999-0000" maxlength="20"/>
+      </div>
+
+      <div class="pix-box">
+        <div class="pix-titulo">💳 Chave PIX para pagamento</div>
+        <div class="pix-chave">43.389.678/0001-10</div>
+        <div class="pix-nome">Tatiane Cristina G. Martins</div>
+        <button class="btn-pix-cop" onclick="copiarPix()">📋 Copiar chave</button>
+      </div>
+
+      <div class="erro-msg" id="erro-msg"></div>
+      <button class="btn-res" id="btn-reservar" disabled onclick="reservar()">Reservar números 🎟️</button>
+      <div class="aviso">Após reservar, envie este comprovante + o comprovante do PIX para confirmar sua(s) cota(s).</div>
+    </div>
+
+    <div class="toggle-admin">
+      <button class="btn-admin" onclick="abrirSenha()">🔐 Painel do organizador</button>
+    </div>
+
+    <div class="admin-painel" id="admin-painel">
+      <div class="admin-titulo">Reservas pendentes — confirmar após receber pagamento</div>
+      <div id="admin-lista"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>✝️ Rifa — Terço dos Amigos &nbsp;|&nbsp; Feito com carinho 🙏</footer>
+
+<!-- Modal comprovante -->
+<div class="modal-overlay" id="modal-comp">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-emoji">🎟️</span>
+      <div class="modal-titulo">Reserva feita!</div>
+    </div>
+    <div class="comp-box" id="comp-texto"></div>
+    <button class="btn-cop" onclick="copiarComp()">📋 Copiar comprovante</button>
+    <button class="btn-fech" onclick="fecharComp()">Fechar</button>
+  </div>
+</div>
+
+<!-- Modal senha -->
+<div class="modal-overlay" id="modal-senha">
+  <div class="modal-senha">
+    <span class="modal-emoji">🔐</span>
+    <div class="senha-titulo">Área do Organizador</div>
+    <div class="senha-erro" id="senha-erro">Senha incorreta. Tente novamente.</div>
+    <input type="password" class="senha-input" id="inp-senha" placeholder="••••" maxlength="10"
+      onkeydown="if(event.key==='Enter')verificarSenha()"/>
+    <button class="btn-entrar" onclick="verificarSenha()">Entrar</button>
+    <button class="btn-fech" onclick="fecharSenha()">Cancelar</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 200;
+  const SENHA = '1107';
+  const PIX = '43.389.678/0001-10';
+  let FIREBASE_URL = localStorage.getItem('rifa_firebase_url') || '';
+
+  let numeros = {};
+  let reservas = [];
+  let selecionados = [];
+  let syncInterval = null;
+
+  // ─── CÁLCULO DE PREÇO ───────────────────────────────────────────────────────
+  function calcPreco(qtd) {
+    const grupos4 = Math.floor(qtd / 4);
+    const resto = qtd % 4;
+    return grupos4 * 25 + resto * 7;
+  }
+
+  // ─── CONFIGURAÇÃO FIREBASE ──────────────────────────────────────────────────
+  function salvarConfig() {
+    const url = document.getElementById('inp-firebase-url').value.trim().replace(/\/$/, '');
+    if (!url.startsWith('https://')) {
+      alert('Cole a URL completa do Firebase, começando com https://');
+      return;
+    }
+    FIREBASE_URL = url;
+    localStorage.setItem('rifa_firebase_url', url);
+    document.getElementById('config-box').style.display = 'none';
+    iniciar();
+  }
+
+  // ─── FIREBASE REST API ──────────────────────────────────────────────────────
+  async function fbGet(path) {
+    const r = await fetch(FIREBASE_URL + path + '.json');
+    if (!r.ok) throw new Error('Erro ao ler Firebase');
+    return r.json();
+  }
+
+  async function fbSet(path, data) {
+    const r = await fetch(FIREBASE_URL + path + '.json', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!r.ok) throw new Error('Erro ao salvar Firebase');
+    return r.json();
+  }
+
+  async function fbPatch(path, data) {
+    const r = await fetch(FIREBASE_URL + path + '.json', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!r.ok) throw new Error('Erro ao atualizar Firebase');
+    return r.json();
+  }
+
+  // ─── CARREGAR DADOS ─────────────────────────────────────────────────────────
+  async function carregar() {
+    const dados = await fbGet('/rifa');
+    numeros = (dados && dados.numeros) ? dados.numeros : {};
+    reservas = (dados && dados.reservas) ? Object.values(dados.reservas) : [];
+  }
+
+  // ─── RENDERIZAÇÃO ───────────────────────────────────────────────────────────
+  function getStatus(n) { return numeros[n] || 'livre'; }
+
+  function renderGrade() {
+    const grade = document.getElementById('grade');
+    grade.innerHTML = '';
+    let disp = 0, res = 0, vend = 0;
+    for (let i = 1; i <= TOTAL; i++) {
+      const st = getStatus(i);
+      const isSel = selecionados.includes(i);
+      if (st === 'livre') disp++;
+      if (st === 'reservado') res++;
+      if (st === 'vendido') vend++;
+      const el = document.createElement('div');
+      let cls = 'num';
+      if (isSel) cls += ' sel';
+      else if (st === 'reservado') cls += ' res';
+      else if (st === 'vendido') cls += ' vend';
+      el.className = cls;
+      el.textContent = i;
+      if (st === 'livre') el.onclick = () => toggleNum(i);
+      grade.appendChild(el);
+    }
+    document.getElementById('cnt-d').textContent = disp - selecionados.length;
+    document.getElementById('cnt-r').textContent = res + selecionados.length;
+    document.getElementById('cnt-v').textContent = vend;
+  }
+
+  function renderSel() {
+    const lista = document.getElementById('sel-lista');
+    lista.innerHTML = '';
+    if (selecionados.length === 0) {
+      lista.innerHTML = '<span class="ph">Clique nos números para selecionar</span>';
+      document.getElementById('total-linha').textContent = '';
+    } else {
+      selecionados.sort((a,b)=>a-b).forEach(n => {
+        const b = document.createElement('span');
+        b.className = 'badge'; b.textContent = n; b.title = 'Clique para remover';
+        b.onclick = () => toggleNum(n);
+        lista.appendChild(b);
+      });
+      const total = calcPreco(selecionados.length);
+      const qtd = selecionados.length;
+      let desc = '';
+      if (qtd >= 4) {
+        const grupos = Math.floor(qtd/4);
+        desc = ` (${grupos}x promoção${qtd%4>0?' + '+qtd%4+' avulso(s)':''})`;
+      }
+      document.getElementById('total-linha').textContent = `Total: R$ ${total},00${desc}`;
+    }
+    document.getElementById('btn-reservar').disabled = selecionados.length === 0;
+  }
+
+  function toggleNum(n) {
+    if (getStatus(n) !== 'livre') return;
+    const idx = selecionados.indexOf(n);
+    if (idx === -1) selecionados.push(n);
+    else selecionados.splice(idx, 1);
+    renderGrade(); renderSel();
+  }
+
+  function mostrarErro(msg) {
+    const el = document.getElementById('erro-msg');
+    el.textContent = msg; el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 5000);
+  }
+
+  // ─── RESERVAR ───────────────────────────────────────────────────────────────
+  async function reservar() {
+    const nome = document.getElementById('inp-nome').value.trim();
+    const fone = document.getElementById('inp-fone').value.trim();
+    if (!nome) { mostrarErro('Por favor, informe seu nome.'); return; }
+    if (selecionados.length === 0) return;
+
+    const btn = document.getElementById('btn-reservar');
+    btn.disabled = true; btn.textContent = 'Aguarde...';
+
+    try {
+      await carregar(); // recarrega para checar conflitos
+
+      const ocupados = selecionados.filter(n => getStatus(n) !== 'livre');
+      if (ocupados.length > 0) {
+        mostrarErro('Os números ' + ocupados.join(', ') + ' foram reservados por outra pessoa. Escolha outros!');
+        selecionados = selecionados.filter(n => !ocupados.includes(n));
+        renderGrade(); renderSel();
+        btn.disabled = false; btn.textContent = 'Reservar números 🎟️';
+        return;
+      }
+
+      const agora = new Date().toLocaleString('pt-BR');
+      const id = Date.now();
+      const nums = [...selecionados].sort((a,b)=>a-b);
+      const total = calcPreco(nums.length);
+
+      // Salva os números reservados
+      const atualizaNum = {};
+      nums.forEach(n => { atualizaNum[n] = 'reservado'; });
+      await fbPatch('/rifa/numeros', atualizaNum);
+
+      // Salva a reserva
+      const reserva = { id, nome, fone, numeros: nums, total, data: agora };
+      await fbSet('/rifa/reservas/' + id, reserva);
+
+      numeros = { ...numeros, ...atualizaNum };
+      reservas.push(reserva);
+
+      document.getElementById('comp-texto').textContent = gerarComp(reserva);
+      document.getElementById('modal-comp').classList.add('ativo');
+
+      selecionados = [];
+      document.getElementById('inp-nome').value = '';
+      document.getElementById('inp-fone').value = '';
+      renderGrade(); renderSel();
+      if (document.getElementById('admin-painel').classList.contains('ativo')) renderAdmin();
+
+    } catch(e) {
+      mostrarErro('Erro de conexão. Verifique sua internet e tente novamente.');
+    }
+
+    btn.disabled = false; btn.textContent = 'Reservar números 🎟️';
+  }
+
+  // ─── COMPROVANTE ────────────────────────────────────────────────────────────
+  function gerarComp(r) {
+    return [
+      '✝️ RIFA — TERÇO DOS AMIGOS',
+      '─────────────────────────',
+      '👤 Nome: ' + r.nome,
+      '📱 WhatsApp: ' + (r.fone || '—'),
+      '🎯 Números: ' + r.numeros.join(', '),
+      '💰 Total: R$ ' + r.total + ',00',
+      '📅 Data: ' + r.data,
+      '─────────────────────────',
+      '💳 PIX: ' + PIX,
+      '   Tatiane Cristina G. Martins',
+      '─────────────────────────',
+      '✅ Envie este comprovante',
+      '+ comprovante do PIX para',
+      'confirmar sua reserva.',
+      '─────────────────────────',
+      '🏆 Prêmios:',
+      '🍫 Cesta de Chocolate',
+      '📖 Bíblia Ave Maria',
+      '📿 Terço',
+      '─────────────────────────',
+      '🙏 Boa sorte e Deus abençoe!'
+    ].join('\n');
+  }
+
+  function copiarComp() {
+    navigator.clipboard.writeText(document.getElementById('comp-texto').textContent).then(() => {
+      const btn = document.querySelector('.btn-cop');
+      btn.textContent = '✅ Copiado!';
+      setTimeout(() => btn.textContent = '📋 Copiar comprovante', 2500);
+    }).catch(() => alert('Selecione o texto e copie manualmente.'));
+  }
+  function fecharComp() { document.getElementById('modal-comp').classList.remove('ativo'); }
+
+  function copiarPix() {
+    navigator.clipboard.writeText(PIX).then(() => {
+      const btn = document.querySelector('.btn-pix-cop');
+      btn.textContent = '✅ Copiado!';
+      setTimeout(() => btn.textContent = '📋 Copiar chave', 2500);
+    }).catch(() => alert('Copie manualmente: ' + PIX));
+  }
+
+  // ─── ADMIN ──────────────────────────────────────────────────────────────────
+  function abrirSenha() {
+    document.getElementById('inp-senha').value = '';
+    document.getElementById('senha-erro').style.display = 'none';
+    document.getElementById('modal-senha').classList.add('ativo');
+    setTimeout(() => document.getElementById('inp-senha').focus(), 100);
+  }
+  function fecharSenha() { document.getElementById('modal-senha').classList.remove('ativo'); }
+
+  function verificarSenha() {
+    if (document.getElementById('inp-senha').value === SENHA) {
+      fecharSenha();
+      const p = document.getElementById('admin-painel');
+      p.classList.add('ativo');
+      carregar().then(renderAdmin);
+    } else {
+      document.getElementById('senha-erro').style.display = 'block';
+      document.getElementById('inp-senha').value = '';
+      document.getElementById('inp-senha').focus();
+    }
+  }
+
+  function renderAdmin() {
+    const lista = document.getElementById('admin-lista');
+    const pendentes = reservas.filter(r => r.numeros.some(n => numeros[n] === 'reservado'));
+    if (pendentes.length === 0) {
+      lista.innerHTML = '<div class="admin-vazio">Nenhuma reserva pendente.</div>';
+      return;
+    }
+    lista.innerHTML = '';
+    pendentes.forEach(r => {
+      const div = document.createElement('div');
+      div.className = 'admin-entrada';
+      div.innerHTML = `<div class="admin-info">
+        <strong>${r.nome}</strong>${r.fone ? ' · 📱 ' + r.fone : ''}<br>
+        <span class="admin-nums">Nº ${r.numeros.join(', ')}</span><br>
+        <span style="color:var(--roxo);font-weight:700">R$ ${r.total},00</span>
+        &nbsp;<span style="color:var(--texto2);font-size:11px">${r.data}</span>
+      </div>
+      <button class="btn-conf" onclick="confirmar(${r.id})">✔ Confirmar</button>`;
+      lista.appendChild(div);
+    });
+  }
+
+  async function confirmar(id) {
+    try {
+      await carregar();
+      const r = reservas.find(x => x.id === id);
+      if (!r) return;
+      const atualizaNum = {};
+      r.numeros.forEach(n => { atualizaNum[n] = 'vendido'; numeros[n] = 'vendido'; });
+      await fbPatch('/rifa/numeros', atualizaNum);
+      renderGrade(); renderAdmin();
+    } catch(e) {
+      alert('Erro ao confirmar. Verifique sua conexão.');
+    }
+  }
+
+  // ─── SYNC E INIT ────────────────────────────────────────────────────────────
+  async function sync() {
+    try {
+      await carregar(); renderGrade();
+      if (document.getElementById('admin-painel').classList.contains('ativo')) renderAdmin();
+    } catch {}
+  }
+
+  async function iniciar() {
+    document.getElementById('loading-box').style.display = 'flex';
+    try {
+      await carregar();
+      document.getElementById('loading-box').style.display = 'none';
+      document.getElementById('conteudo').style.display = 'block';
+      renderGrade(); renderSel();
+      if (syncInterval) clearInterval(syncInterval);
+      syncInterval = setInterval(sync, 15000);
+    } catch(e) {
+      document.getElementById('loading-box').style.display = 'none';
+      document.getElementById('config-box').style.display = 'block';
+      document.getElementById('config-box').querySelector('.config-texto').innerHTML =
+        '⚠️ <strong>Não foi possível conectar.</strong> Verifique a URL do Firebase e tente novamente.';
+    }
+  }
+
+  // Inicializa
+  if (FIREBASE_URL) {
+    document.getElementById('config-box').style.display = 'none';
+    iniciar();
+  }
+</script>
+</body>
+</html>
