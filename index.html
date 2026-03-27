@@ -688,7 +688,7 @@
   const TOTAL = 200;
   const SENHA = '1107';
   const PIX = '43.389.678/0001-10';
-  let FIREBASE_URL = localStorage.getItem('rifa_firebase_url') || '';
+  let FIREBASE_URL = 'https://casa-facil-4aef8-default-rtdb.firebaseio.com';
 
   let numeros = {};
   let reservas = [];
@@ -998,11 +998,9 @@
     }
   }
 
-  // Inicializa
-  if (FIREBASE_URL) {
-    document.getElementById('config-box').style.display = 'none';
-    iniciar();
-  }
+  // Inicializa direto
+  document.getElementById("config-box").style.display = "none";
+  iniciar();
 </script>
 </body>
 </html>
