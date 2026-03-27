@@ -582,17 +582,7 @@
 
 <div class="container">
 
-  <!-- AVISO DE CONFIGURAÇÃO -->
-  <div class="config-box" id="config-box">
-    <div class="config-titulo">⚙️ Configure seu Firebase</div>
-    <div class="config-texto">
-      Cole abaixo a URL do seu <strong>Firebase Realtime Database</strong>.<br>
-      Siga o passo a passo do arquivo <strong>LEIA-ME.txt</strong> que veio junto para criar o banco gratuitamente.
-    </div>
-    <input type="text" class="config-input" id="inp-firebase-url" placeholder="https://seu-projeto-default-rtdb.firebaseio.com"/>
-    <br/>
-    <button class="btn-config" onclick="salvarConfig()">Salvar e conectar</button>
-  </div>
+  <div id="config-box" style="display:none"></div>
 
   <!-- LOADING -->
   <div id="loading-box" class="loading-box" style="display:none">
